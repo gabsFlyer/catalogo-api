@@ -21,19 +21,19 @@ class AuthController extends Controller
         return $this->respondWithToken($token);
     }
 
-    // public function me() {
-    //     return response()->json(auth('api')->user());
-    // }
+    public function me() {
+        return response()->json(auth('api')->user());
+    }
 
-    // public function logout() {
-    //     auth('api')->logout();
+    public function logout() {
+        auth('api')->logout();
 
-    //     return response()->json(['message' => 'Successfully logged out']);
-    // }
+        return response()->json(['message' => 'Successfully logged out']);
+    }
 
-    // public function refresh() {
-    //     return $this->respondWithToken(auth('api')->refresh());
-    // }
+    public function refresh() {
+        return $this->respondWithToken(auth('api')->refresh());
+    }
 
     protected function respondWithToken($token) {
         return response()->json([
