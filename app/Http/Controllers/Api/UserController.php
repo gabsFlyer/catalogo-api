@@ -28,9 +28,9 @@ class UserController extends Controller
         *               type="object",
         *               required={"name","email", "password", "password_confirmation"},
         *               @OA\Property(property="name", type="string"),
-        *               @OA\Property(property="email", type="text"),
-        *               @OA\Property(property="password", type="password"),
-        *               @OA\Property(property="password_confirmation", type="password")
+        *               @OA\Property(property="email", type="string"),
+        *               @OA\Property(property="password", type="string"),
+        *               @OA\Property(property="password_confirmation", type="string")
         *            ),
         *        ),
         *    ),
