@@ -15,6 +15,44 @@ class UserController extends Controller
         return response()->json($users);
     }
 
+    /**
+        * @OA\Post(
+        * path="/api/users",
+        * tags={"Store"},
+        * summary="User Store",
+        *     @OA\RequestBody(
+        *         @OA\JsonContent(),
+        *         @OA\MediaType(
+        *            mediaType="json",
+        *            @OA\Schema(
+        *               type="object",
+        *               required={"name","email", "password", "password_confirmation"},
+        *               @OA\Property(property="name", type="string"),
+        *               @OA\Property(property="email", type="text"),
+        *               @OA\Property(property="password", type="password"),
+        *               @OA\Property(property="password_confirmation", type="password")
+        *            ),
+        *        ),
+        *    ),
+        *      @OA\Response(
+        *          response=201,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=200,
+        *          description="Register Successfully",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(
+        *          response=422,
+        *          description="Unprocessable Entity",
+        *          @OA\JsonContent()
+        *       ),
+        *      @OA\Response(response=400, description="Bad request"),
+        *      @OA\Response(response=404, description="Resource Not Found"),
+        * )
+        */
     public function store(Request $request) {
         $user = $request->all();
         $password = $request->input('password');
