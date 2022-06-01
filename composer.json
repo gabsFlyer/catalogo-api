@@ -1,102 +1,63 @@
 {
-    "name": "slim/slim",
-    "type": "library",
-    "description": "Slim is a PHP micro framework that helps you quickly write simple yet powerful web applications and APIs",
-    "keywords": ["framework","micro","api","router"],
-    "homepage": "https://www.slimframework.com",
+    "name": "laravel/laravel",
+    "type": "project",
+    "description": "The Laravel Framework.",
+    "keywords": ["framework", "laravel"],
     "license": "MIT",
-    "authors": [
-        {
-            "name": "Josh Lockhart",
-            "email": "hello@joshlockhart.com",
-            "homepage": "https://joshlockhart.com"
-        },
-        {
-            "name": "Andrew Smith",
-            "email": "a.smith@silentworks.co.uk",
-            "homepage": "http://silentworks.co.uk"
-        },
-        {
-            "name": "Rob Allen",
-            "email": "rob@akrabat.com",
-            "homepage": "http://akrabat.com"
-        },
-        {
-            "name": "Pierre Berube",
-            "email": "pierre@lgse.com",
-            "homepage": "http://www.lgse.com"
-        },
-        {
-            "name": "Gabriel Manricks",
-            "email": "gmanricks@me.com",
-            "homepage": "http://gabrielmanricks.com"
-        }
-    ],
-    "support": {
-        "docs": "https://www.slimframework.com/docs/v4/",
-        "forum": "https://discourse.slimframework.com/",
-        "irc": "irc://irc.freenode.net:6667/slimphp",
-        "issues": "https://github.com/slimphp/Slim/issues",
-        "rss": "https://www.slimframework.com/blog/feed.rss",
-        "slack": "https://slimphp.slack.com/",
-        "source": "https://github.com/slimphp/Slim",
-        "wiki": "https://github.com/slimphp/Slim/wiki"
-    },
     "require": {
-        "php": "^7.4 || ^8.0",
-        "ext-json": "*",
-        "nikic/fast-route": "^1.3",
-        "psr/container": "^1.0 || ^2.0",
-        "psr/http-factory": "^1.0",
-        "psr/http-message": "^1.0",
-        "psr/http-server-handler": "^1.0",
-        "psr/http-server-middleware": "^1.0",
-        "psr/log": "^1.1 || ^2.0 || ^3.0"
+        "php": "^7.3|^8.0",
+        "fruitcake/laravel-cors": "^2.0",
+        "guzzlehttp/guzzle": "^7.0.1",
+        "laravel/framework": "^8.75",
+        "laravel/sanctum": "^2.11",
+        "laravel/tinker": "^2.5",
+        "tymon/jwt-auth": "1.0.2"
     },
     "require-dev": {
-        "ext-simplexml": "*",
-        "adriansuter/php-autoload-override": "^1.2",
-        "guzzlehttp/psr7": "^2.1",
-        "httpsoft/http-message": "^1.0",
-        "httpsoft/http-server-request": "^1.0",
-        "laminas/laminas-diactoros": "^2.8",
-        "nyholm/psr7": "^1.5",
-        "nyholm/psr7-server": "^1.0",
-        "phpspec/prophecy": "^1.15",
-        "phpspec/prophecy-phpunit": "^2.0",
-        "phpstan/phpstan": "^1.4",
-        "phpunit/phpunit": "^9.5",
-        "slim/http": "^1.2",
-        "slim/psr7": "^1.5",
-        "squizlabs/php_codesniffer": "^3.6"
+        "facade/ignition": "^2.5",
+        "fakerphp/faker": "^1.9.1",
+        "laravel/sail": "^1.0.1",
+        "mockery/mockery": "^1.4.4",
+        "nunomaduro/collision": "^5.10",
+        "phpunit/phpunit": "^9.5.10"
     },
     "autoload": {
         "psr-4": {
-            "Slim\\": "Slim"
+            "App\\": "app/",
+            "Database\\Factories\\": "database/factories/",
+            "Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Slim\\Tests\\": "tests"
+            "Tests\\": "tests/"
         }
     },
     "scripts": {
-        "test": [
-            "@phpunit",
-            "@phpcs",
-            "@phpstan"
+        "post-autoload-dump": [
+            "Illuminate\\Foundation\\ComposerScripts::postAutoloadDump",
+            "@php artisan package:discover --ansi"
         ],
-        "phpunit": "phpunit",
-        "phpcs": "phpcs",
-        "phpstan": "phpstan --memory-limit=-1"
+        "post-update-cmd": [
+            "@php artisan vendor:publish --tag=laravel-assets --ansi --force"
+        ],
+        "post-root-package-install": [
+            "@php -r \"file_exists('.env') || copy('.env.example', '.env');\""
+        ],
+        "post-create-project-cmd": [
+            "@php artisan key:generate --ansi"
+        ]
     },
-    "suggest": {
-        "ext-simplexml": "Needed to support XML format in BodyParsingMiddleware",
-        "ext-xml": "Needed to support XML format in BodyParsingMiddleware",
-        "slim/psr7": "Slim PSR-7 implementation. See https://www.slimframework.com/docs/v4/start/installation.html for more information.",
-        "php-di/php-di": "PHP-DI is the recommended container library to be used with Slim"
+    "extra": {
+        "laravel": {
+            "dont-discover": []
+        }
     },
     "config": {
+        "optimize-autoloader": true,
+        "preferred-install": "dist",
         "sort-packages": true
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }
