@@ -4,11 +4,17 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 
 class UserController extends Controller
 {
+
+    public function __construct(UserService $service)
+    {
+        $this->service = $service;
+    }
 
     public function index() {
         $users = User::all();
@@ -54,10 +60,7 @@ class UserController extends Controller
         * )
         */
     public function store(Request $request) {
-        $user = $request->all();
-        $password = $request->input('password');
-        $user['password'] = bcrypt($password);
-        User::create($user);
+        return $this->service->store($request);
     }
 
     public function show($id)
