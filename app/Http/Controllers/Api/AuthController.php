@@ -31,7 +31,7 @@ class AuthController extends Controller
         $userStore = $this->userService->store($request);
 
         if ($userStore->status() === 201) {
-            return $this->login($request);
+            return $this->signIn($request);
         }
 
         return $userStore;
