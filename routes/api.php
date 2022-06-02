@@ -5,6 +5,7 @@ use App\Http\Controllers\Api\AuthController;
 use App\Http\Controllers\Api\UserController;
 
 Route::post('auth/signIn', [AuthController::class, 'login']);
+Route::post('auth/signUp', [UserController::class, 'store']);
 
 Route::middleware(['apiJwt'])->group(function () {
     Route::post('auth/logout', [AuthController::class, 'logout']);
