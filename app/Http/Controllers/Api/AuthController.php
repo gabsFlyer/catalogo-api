@@ -3,15 +3,20 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Services\UserService;
 use Illuminate\Http\Request;
 
 class AuthController extends Controller
 {
-    public function __construct() {
-        $this->middleware('auth:api', ['except' => ['login']]);
+    public function __construct(
+        UserService $userService
+    ) {
+        $this->userService = $userService;
+        $this->middleware('auth:api', ['except' => ['signIn', 'signUp']]);
     }
 
-    public function login(Request $request) {
+    public function signIn(Request $request)
+    {
         $credentials = $request->only(['email', 'password']);
 
         if (!$token = auth('api')->attempt($credentials)) {
@@ -19,6 +24,17 @@ class AuthController extends Controller
         }
 
         return $this->respondWithToken($token);
+    }
+
+    public function signUp(Request $request)
+    {
+        $userStore = $this->userService->store($request);
+
+        if ($userStore->status() === 201) {
+            return $this->login($request);
+        }
+
+        return $userStore;
     }
 
     public function me() {

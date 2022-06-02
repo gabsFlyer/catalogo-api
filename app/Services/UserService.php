@@ -18,7 +18,8 @@ class UserService extends Service
         $user['password'] = bcrypt($password);
 
         try {
-            return User::create($user);
+            $return = User::create($user);
+            return response()->json($return, 201);
         }
         catch (\Illuminate\Database\QueryException $e) {
             $error = array(
