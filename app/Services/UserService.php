@@ -13,6 +13,13 @@ class UserService extends Service
 
     public function store(Request $request)
     {
+        $validated = $request->validate([
+            'name' => 'required|max:255',
+            'phone' => 'required',
+            'email' => 'required|unique:users|',
+            'password' => 'required',
+        ]);
+
         $user = $request->all();
         $password = $request->input('password');
         $user['password'] = bcrypt($password);
@@ -23,7 +30,7 @@ class UserService extends Service
         }
         catch (\Illuminate\Database\QueryException $e) {
             $error = array(
-                "message" => "error saving user"
+                "message" => "error saving user - " . $e->getMessage(),
             );
 
             if ($this->getUniqueValidationError($e)) {

@@ -28,6 +28,10 @@ class AuthController extends Controller
 
     public function signUp(Request $request)
     {
+        $request->merge([
+            'hierarchy' => 1,
+        ]);
+
         $userStore = $this->userService->store($request);
 
         if ($userStore->status() === 201) {
