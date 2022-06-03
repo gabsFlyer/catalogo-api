@@ -1,19 +1,17 @@
 <?php
-
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use App\Services\UserService;
+use App\Models\File;
+use App\Services\FileService;
 
-class UserController extends Controller
+class FileController extends Controller
 {
 
-    public function __construct(User $model, UserService $service)
+    public function __construct(File $model, FileService $service)
     {
         $this->model = $model;
         $this->service = $service;
     }
-
 
 }
