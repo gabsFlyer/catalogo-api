@@ -8,6 +8,7 @@ Route::post('auth/signIn', [AuthController::class, 'signIn']);
 Route::post('auth/signUp', [AuthController::class, 'signUp']);
 
 Route::middleware(['apiJwt'])->group(function () {
+    Route::post('auth/me', [AuthController::class, 'me']);
     Route::post('auth/logout', [AuthController::class, 'logout']);
 
     Route::apiResource('users', UserController::class);
