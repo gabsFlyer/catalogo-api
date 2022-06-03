@@ -3,6 +3,7 @@
 namespace App\Exceptions;
 
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
 class Handler extends ExceptionHandler
@@ -37,5 +38,25 @@ class Handler extends ExceptionHandler
         $this->reportable(function (Throwable $e) {
             //
         });
+    }
+
+    /**
+     * Render an exception into an HTTP response.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \Exception $exception
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
+     * @throws \Exception
+     */
+    public function render($request, Throwable $exception)
+    {
+        if (strpos($request->getRequestUri(), '/api/', 0) === 0
+         && get_class($exception) === NotFoundHttpException::class
+        ) {
+            return response()->json(['message' => 'Opa! Não tem nada aqui'], 404);
+        }
+
+        return parent::render($request, $exception);
     }
 }
