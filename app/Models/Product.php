@@ -1,12 +1,11 @@
 <?php
-
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    protected $with = ['measurementUnit'];
+    protected $with = ['measurementUnit', 'file'];
 
     protected $fillable = [
         'name',
@@ -17,11 +16,14 @@ class Product extends Model
         'wholesale_price',
         'wholesale_minimum_quantity',
         'maximum_percent_discount',
-        'measurement_unit_id'
+
+        'measurement_unit_id',
+        'file_id'
     ];
 
     protected $hidden = [
-        'measurement_unit_id'
+        'measurement_unit_id',
+        'file_id'
     ];
 
     public function rules() {
@@ -35,5 +37,9 @@ class Product extends Model
 
     public function measurementUnit() {
         return $this->belongsTo(MeasurementUnit::class);
+    }
+
+    public function file() {
+        return $this->belongsTo(File::class);
     }
 }
