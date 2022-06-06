@@ -13,8 +13,8 @@ class AlterProductsAddPurchasePrice extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
-            $table->decimal('purchase_price', $precision = 8, $scale = 2);
+        Schema::table('products', function (Blueprint $table) {
+            $table->decimal('purchase_price', $precision = 8, $scale = 2)->nullable();
         });
     }
 
@@ -25,7 +25,7 @@ class AlterProductsAddPurchasePrice extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             $table->dropColumn('purchase_price');
         });
     }
