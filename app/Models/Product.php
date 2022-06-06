@@ -29,7 +29,6 @@ class Product extends Model
     public function rules() {
         return [
             'name' => 'required',
-            'purchase_price' => 'gt:0',
             'unit_price' => 'required|gt:0',
             'wholesale_price' => 'required|gt:0',
             'wholesale_minimum_quantity' => 'required|gt:0'
