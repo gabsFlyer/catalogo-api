@@ -9,4 +9,8 @@ class MeasurementUnitService extends Service
     {
         $this->model = $model;
     }
+
+    public function index(){
+        return $this->model::all();
+    }
 }
