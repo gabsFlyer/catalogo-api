@@ -23,7 +23,8 @@ class Service
     public function update(Request $request, $id)
     {
         $model = $this->model::findOrFail($id);
-        return $model->update($request->all());
+        $model->update($request->all());
+        return $model;
     }
 
     public function destroy($id)
