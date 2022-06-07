@@ -11,4 +11,10 @@ class File extends Model
         'file_name',
         'file_extension'
     ];
+
+    public function rules(){
+        return [
+            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048'
+        ];
+    }
 }

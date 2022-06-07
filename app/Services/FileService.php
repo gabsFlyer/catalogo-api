@@ -15,10 +15,6 @@ class FileService extends Service
 
     public function store(Request $request)
     {
-        $validatedData = $request->validate([
-            'image' => 'required|image|mimes:jpg,png,jpeg,gif,svg|max:2048',
-           ]);
-
         if (!$request->hasFile('image') || !$request->file('image')->isValid()) {
             return response()->json(['message' => 'Arquivo não enviado'], 400);
         }
