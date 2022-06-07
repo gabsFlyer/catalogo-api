@@ -12,26 +12,27 @@ class ProductService extends Service
     }
 
     public function store(Request $request) {
-        $measurementUnit = $request->input('measurement_unit');
-
-        if($measurementUnit != null && in_array('id', array_keys($measurementUnit))){
-            $request->merge([
-                'measurement_unit_id' => $measurementUnit['id']
-            ]);
-        }
+        $request = $this->moveIdFromObject($request, 'measurement_unit');
+        $request = $this->moveIdFromObject($request, 'file');
 
         return parent::store($request);
     }
 
     public function update(Request $request, $id) {
-        $measurementUnit = $request->input('measurement_unit');
+        $request = $this->moveIdFromObject($request, 'measurement_unit');
+        $request = $this->moveIdFromObject($request, 'file');
 
-        if($measurementUnit != null && in_array('id', array_keys($measurementUnit))){
+        return parent::update($request, $id);
+    }
+
+    private function moveIdFromObject(Request $request, $table) {
+        $child = $request->input($table);
+        if($child != null && in_array('id', array_keys($child))){
             $request->merge([
-                'measurement_unit_id' => $measurementUnit['id']
+                "{$table}_id" => $child['id']
             ]);
         }
 
-        return parent::update($request, $id);
+        return $request;
     }
 }
