@@ -22,4 +22,16 @@ class ProductService extends Service
 
         return parent::store($request);
     }
+
+    public function update(Request $request, $id) {
+        $measurementUnit = $request->input('measurement_unit');
+
+        if($measurementUnit != null && in_array('id', array_keys($measurementUnit))){
+            $request->merge([
+                'measurement_unit_id' => $measurementUnit['id']
+            ]);
+        }
+
+        return parent::update($request, $id);
+    }
 }

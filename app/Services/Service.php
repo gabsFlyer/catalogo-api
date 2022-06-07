@@ -24,7 +24,8 @@ class Service
     {
         $model = $this->model::findOrFail($id);
         $model->update($request->all());
-        return $model;
+
+        return $this->model::findOrFail($id);
     }
 
     public function destroy($id)
