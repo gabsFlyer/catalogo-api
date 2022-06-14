@@ -15,16 +15,22 @@ class FileService extends Service
 
     public function store(Request $request)
     {
-        if (!$request->hasFile('image') || !$request->file('image')->isValid()) {
+        if (!$request->has('image') || !strpos($request->image, ';base64')) {
             return response()->json(['message' => 'Arquivo não enviado'], 400);
         }
 
         $uuid = Str::uuid();
-        $extension = $request->file('image')->getClientOriginalExtension();
-        $originalName = $request->file('image')->getClientOriginalName();
+        $base64Image = $request->image;
+
+        $extension = explode('/', $base64Image);
+        $extension = explode(';', $extension[1]);
+        $extension = $extension[0];
         $fileName = "{$uuid}.{$extension}";
 
-        $upload = Image::make($request->file('image'))
+        $file = explode(',', $base64Image);
+        $file = $file[1];
+
+        $upload = Image::make(base64_decode($file))
             -> save(storage_path("app/public/$fileName", 70));
 
         if (!$upload) {
@@ -32,7 +38,6 @@ class FileService extends Service
         }
 
         $req = $request->all();
-        $req['original_name'] = $originalName;
         $req['file_name'] = $fileName;
         $req['file_extension'] = $extension;
 
