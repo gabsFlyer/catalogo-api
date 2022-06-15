@@ -3,7 +3,7 @@ on:
     branches:
       - development
 
-name: API development deploy
+name: api development deploy
 
 jobs:
   web-deploy:
@@ -20,4 +20,4 @@ jobs:
           server: ${{ secrets.ftp_host }}
           username: ${{ secrets.ftp_user }}
           password: ${{ secrets.ftp_pass }}
-          server-dir: www/dev/api
+          server-dir: www/dev/api/
