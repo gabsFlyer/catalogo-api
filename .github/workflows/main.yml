@@ -15,9 +15,9 @@ jobs:
         uses: actions/checkout@v2
 
       - name: Sync to Server
-        uses: SamKirkland/FTP-Deploy-Action@4.0.0
+        uses: SamKirkland/FTP-Deploy-Action@4.2.0
         with:
           server: ${{ secrets.ftp_host }}
           username: ${{ secrets.ftp_user }}
           password: ${{ secrets.ftp_pass }}
-          server-dir: public_html/api/
+          server-dir: public_html/www/api/
