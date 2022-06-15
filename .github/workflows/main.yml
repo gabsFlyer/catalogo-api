@@ -3,11 +3,11 @@ on:
     branches:
       - main
 
-name: API development deploy
+name: api main deploy
 
 jobs:
   web-deploy:
-    name: Development Deploy
+    name: Main Deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -20,4 +20,4 @@ jobs:
           server: ${{ secrets.ftp_host }}
           username: ${{ secrets.ftp_user }}
           password: ${{ secrets.ftp_pass }}
-          server-dir: www/api
+          server-dir: www/api/
