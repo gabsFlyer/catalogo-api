@@ -35,16 +35,12 @@ jobs:
         with:
           repository: gabsFlyer/releases-repo
           ssh-key: ${{ secrets.ssh_key }}
-          #ref: api/production
           
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
           name: dist
           path: './'
-
-      - name: 🕵🏻 Display structure of downloaded files
-        run: ls -R
         
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
