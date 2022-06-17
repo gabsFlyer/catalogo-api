@@ -3,21 +3,47 @@ on:
     branches:
       - development
 
-name: api development deploy
+name: 🚀 Development Deploy
 
 jobs:
-  web-deploy:
-    name: Development Deploy
+  build:
+    name: ⛏️ Build
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Get latest code
+      - name: 🏠 Checkout
         uses: actions/checkout@v2
-
-      - name: Sync to Server
-        uses: SamKirkland/FTP-Deploy-Action@4.3.0
+        
+      - name: 🎁 Create build
+        uses: actions/upload-artifact@v3.1.0
         with:
-          server: ${{ secrets.ftp_host }}
-          username: ${{ secrets.ftp_user }}
-          password: ${{ secrets.ftp_pass }}
-          server-dir: public_html/dev/api/
+          name: dist
+          path: |
+            .
+            !.git/**
+            !.github/**
+            !.git*
+  
+  deploy:
+    name: 🚀 Deploy to ReleasesRepo
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🏠 Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: gabsFlyer/releases-repo
+          ssh-key: ${{ secrets.ssh_key }}
+          
+      - name: ⬇️ Download artifact
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: dist
+          path: './'
+        
+      - name: 📤 Commit changes
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          new_branch: 'api/development'
+          push: 'origin api/development --set-upstream --force'
