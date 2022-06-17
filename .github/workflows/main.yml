@@ -3,21 +3,51 @@ on:
     branches:
       - main
 
-name: api main deploy
+name: 🚀 Production Deploy
 
 jobs:
-  web-deploy:
-    name: Main Deploy
+  build:
+    name: ⛏️ Build
     runs-on: ubuntu-latest
-
+    
     steps:
-      - name: Get latest code
+      - name: 🏠 Checkout
         uses: actions/checkout@v2
-
-      - name: Sync to Server
-        uses: SamKirkland/FTP-Deploy-Action@4.2.0
+        
+      - name: 🎁 Create build
+        uses: actions/upload-artifact@v3.1.0
         with:
-          server: ${{ secrets.ftp_host }}
-          username: ${{ secrets.ftp_user }}
-          password: ${{ secrets.ftp_pass }}
-          server-dir: ./www/api/
+          name: dist
+          path: |
+            .
+            !.git/**
+            !.github/**
+  
+  deploy:
+    name: 🚀 Deploy to ReleasesRepository
+    if: ${{ false }}
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: 🏠 Checkout
+        uses: actions/checkout@v2
+        with:
+          repository: gabsFlyer/releases-repo
+          ssh-key: ${{ secrets.ssh_key }}
+          #ref: api/production
+          
+      - name: ⬇️ Download artifact
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: dist
+          path: './'
+
+      - name: 🕵🏻 Display structure of downloaded files
+        run: ls -R
+        
+      - name: 📤 Commit changes
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          new_branch: 'api/production'
+          push: 'origin api/production --set-upstream --force'
