@@ -22,10 +22,10 @@ jobs:
             .
             !.git/**
             !.github/**
+            !.git*
   
   deploy:
-    name: 🚀 Deploy to ReleasesRepository
-    if: ${{ false }}
+    name: 🚀 Deploy to ReleasesRepo
     needs: build
     runs-on: ubuntu-latest
     
