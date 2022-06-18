@@ -3,17 +3,20 @@ on:
     branches:
       - main
 
+env:
+  RELEASE_BRANCH: 'api/production'
+
 name: 🚀 Production Deploy
 
 jobs:
   build:
     name: ⛏️ Build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 🏠 Checkout
         uses: actions/checkout@v2
-        
+
       - name: 🎁 Create build
         uses: actions/upload-artifact@v3.1.0
         with:
@@ -23,27 +26,62 @@ jobs:
             !.git/**
             !.github/**
             !.git*
-  
+
   deploy:
     name: 🚀 Deploy to ReleasesRepo
     needs: build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 🏠 Checkout
         uses: actions/checkout@v2
         with:
           repository: gabsFlyer/releases-repo
           ssh-key: ${{ secrets.ssh_key }}
-          
+          ref: ${{ env.RELEASE_BRANCH }}
+
+      - name: 🧹 Clean old repository files
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          remove: './*'
+          new_branch: ${{ env.RELEASE_BRANCH }}
+          push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
+
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
           name: dist
           path: './'
-        
+
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
         with:
-          new_branch: 'api/production'
-          push: 'origin api/production --set-upstream --force'
+          message: ${{ github.event.head_commit.message }}
+          new_branch: ${{ env.RELEASE_BRANCH }}
+          push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
+
+  migrate:
+    name: 🗃️ Run migrations
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏠 Checkout
+        uses: actions/checkout@v2
+
+      - name: ⚙️ Setup PHP
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: "latest"
+
+      - name: ⚙️ Setup Composer
+        uses: "ramsey/composer-install@v2"
+
+      - name: ⚙️ Install Dependencies
+        run: 'composer update'
+
+      - name: 👮🏻 Copy env file
+        run: php -r "file_exists('.env') || copy('.env.prod', '.env');"
+
+      - name: 🔃 Run migrations
+        run: php artisan migrate
