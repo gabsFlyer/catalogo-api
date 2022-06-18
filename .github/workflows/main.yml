@@ -79,11 +79,8 @@ jobs:
         with:
           dependency-versions: highest
 
-      # - name: ⚙️ Install Dependencies
-      #   run: 'composer update'
-
       - name: 👮🏻 Copy env file
         run: php -r "file_exists('.env') || copy('.env.prod', '.env');"
 
       - name: 🔃 Run migrations
-        run: php artisan migrate
+        run: php artisan migrate --force
