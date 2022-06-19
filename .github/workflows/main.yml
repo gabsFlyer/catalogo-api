@@ -103,9 +103,9 @@ jobs:
 
       - name: 📤 Upload backup
         uses: actions/upload-artifact@v3.1.0
-          with:
-            name: dist
-            path: './storage/app/catalogo-api'
+        with:
+          name: dist
+          path: './storage/app/catalogo-api'
 
 
   migrate:
