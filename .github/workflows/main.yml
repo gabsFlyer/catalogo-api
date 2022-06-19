@@ -31,12 +31,25 @@ jobs:
       - name: 👮🏻 Copy env file
         run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
 
+      - name: 💼 Zip vendor file
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r vendor.zip vendor
+
+      - name: 📤 Upload vendor
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: vendor
+          path: './vendor'
+
       - name: 🎁 Create build
         uses: actions/upload-artifact@v3.1.0
         with:
           name: dist
           path: |
             .
+            !vendor.zip
+            !vendor/**
             !.git/**
             !.github/**
             !.git*
@@ -67,6 +80,17 @@ jobs:
         with:
           name: dist
           path: './'
+
+      - name: ⬇️ Download vendor
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: vendor
+          path: './'
+
+      - name: Unzip vendor.zip
+        uses: montudor/action-zip@v1
+        with:
+          args: unzip -qq vendor.zip -d vendor
 
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
