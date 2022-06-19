@@ -62,7 +62,6 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
             'dump' => [
-                // 'dump_binary_path' => env('MYSQL_DUMP_PATH'),
                 'use_single_transaction',
                 'timeout' => 60 * 5,
                 'add_extra_option' => '--column-statistics=0',
