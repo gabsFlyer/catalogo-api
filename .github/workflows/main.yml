@@ -5,45 +5,157 @@ on:
 
 name: 🚀 Production Deploy
 
+env:
+  RELEASE_BRANCH: 'api/production'
+  ENV_FILE: '.env.prod'
+
 jobs:
   build:
     name: ⛏️ Build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 🏠 Checkout
         uses: actions/checkout@v2
-        
+
+      - name: ⚙️ Setup PHP
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: '7.4'
+
+      - name: ⚙️ Setup Composer
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: highest
+
+      - name: 👮🏻 Copy env file
+        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+
+      - name: 💼 Zip vendor file
+        uses: montudor/action-zip@v1
+        with:
+          args: zip -qq -r vendor.zip vendor
+
+      - name: 📤 Upload vendor
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: vendor
+          path: './vendor.zip'
+
       - name: 🎁 Create build
         uses: actions/upload-artifact@v3.1.0
         with:
           name: dist
           path: |
             .
+            !vendor.zip
+            !vendor/**
             !.git/**
             !.github/**
             !.git*
-  
+
+
   deploy:
     name: 🚀 Deploy to ReleasesRepo
     needs: build
     runs-on: ubuntu-latest
-    
+
     steps:
       - name: 🏠 Checkout
         uses: actions/checkout@v2
         with:
           repository: gabsFlyer/releases-repo
           ssh-key: ${{ secrets.ssh_key }}
-          
+          ref: ${{ env.RELEASE_BRANCH }}
+
+      - name: 🧹 Clean old repository files
+        uses: EndBug/add-and-commit@v9.0.0
+        with:
+          remove: './*'
+          new_branch: ${{ env.RELEASE_BRANCH }}
+          push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
+
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
           name: dist
           path: './'
-        
+
+      - name: ⬇️ Download vendor.zip
+        uses: actions/download-artifact@v3.0.0
+        with:
+          name: vendor
+          path: './'
+
+      - name: 📂 Unzip vendor.zip
+        uses: montudor/action-zip@v1
+        with:
+          args: unzip -qq vendor.zip
+
+      - name: 🗑️ Delete vendor.zip
+        run: rm vendor.zip
+
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
         with:
-          new_branch: 'api/production'
-          push: 'origin api/production --set-upstream --force'
+          message: ${{ github.event.head_commit.message }}
+          new_branch: ${{ env.RELEASE_BRANCH }}
+          push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
+
+
+  backup:
+    name: 📄 Backup
+    needs: deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏠 Checkout
+        uses: actions/checkout@v2
+
+      - name: ⚙️ Setup PHP
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: '7.4'
+
+      - name: ⚙️ Setup Composer
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: highest
+
+      - name: 👮🏻 Copy env file
+        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+
+      - name: 📄 Make Backup
+        run: php artisan backup:run --only-db
+
+      - name: 📤 Upload backup
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          name: backup
+          path: './storage/app/catalogo-api'
+
+
+  migrate:
+    name: 🗃️ Run migrations
+    needs: backup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏠 Checkout
+        uses: actions/checkout@v2
+
+      - name: ⚙️ Setup PHP
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: '7.4'
+
+      - name: ⚙️ Setup Composer
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: highest
+
+      - name: 👮🏻 Copy env file
+        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+
+      - name: 🔃 Run migrations
+        run: php artisan migrate --force
