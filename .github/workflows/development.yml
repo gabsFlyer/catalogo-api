@@ -35,7 +35,8 @@ jobs:
 
       - name: 🧹 Clear cache
         run: |
-          php artisan optimize:clear
+          php artisan config:clear
+          php artisan config:cache
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
