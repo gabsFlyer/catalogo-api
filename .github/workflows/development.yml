@@ -28,14 +28,14 @@ jobs:
         with:
           dependency-versions: highest
 
+      - name: 👮🏻 Copy env file
+        run: |
+          php -r "file_exists('.env') && unlink('.env')"
+          php -r "copy('${{ env.ENV_FILE }}', '.env');"
+
       - name: 🧹 Clear cache
         run: |
-          php artisan cache:clear
-          php artisan config:clear
-          php artisan route:cache
-
-      - name: 👮🏻 Copy env file
-        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+          php artisan optimize:clear
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
