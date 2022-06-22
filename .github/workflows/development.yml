@@ -28,6 +28,12 @@ jobs:
         with:
           dependency-versions: highest
 
+      - name: 🧹 Clear cache
+        run: |
+          php artisan cache:clear
+          php artisan config:clear
+          php artisan route:cache
+
       - name: 👮🏻 Copy env file
         run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
 
