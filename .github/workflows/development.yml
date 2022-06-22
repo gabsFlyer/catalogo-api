@@ -30,7 +30,7 @@ jobs:
 
       - name: 👮🏻 Copy env file
         run: |
-          php -r "file_exists('.env') && unlink('.env')"
+          php -r "file_exists('.env') && unlink('.env');"
           php -r "copy('${{ env.ENV_FILE }}', '.env');"
 
       - name: 🧹 Clear cache
