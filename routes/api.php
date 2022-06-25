@@ -14,6 +14,7 @@ Route::post('auth/signUp', [AuthController::class, 'signUp']);
 Route::middleware(['apiJwt'])->group(function () {
     Route::post('auth/me', [AuthController::class, 'me']);
     Route::post('auth/logout', [AuthController::class, 'logout']);
+    Route::post('auth/refresh', [AuthController::class, 'refresh']);
 
     Route::apiResource('measurement-unit', MeasurementUnitController::class);
     Route::apiResource('file', FileController::class);
