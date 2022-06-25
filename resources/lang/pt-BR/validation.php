@@ -186,6 +186,12 @@ return [
         'description' => 'descrição',
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
+
+        'unit' => 'unidade',
+        'unit_price' => 'preço unitário',
+        'whatsapp' => 'WhatsApp',
+        'wholesale_price' => 'preço atacado',
+        'wholesale_minimum_quantity' => 'quantidade mínima atacado',
     ],
 
 ];
