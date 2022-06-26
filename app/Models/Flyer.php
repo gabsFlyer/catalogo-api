@@ -30,7 +30,8 @@ class Flyer extends Model
         return [
             'name' => 'required',
             'valid_until' => 'required',
-            'enterprise' => 'required'
+            'enterprise' => 'required',
+            'products' => 'required|array',
         ];
     }
 }
