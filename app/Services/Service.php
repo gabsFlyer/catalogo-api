@@ -8,8 +8,9 @@ class Service
 {
     protected $relationships = [];
 
-    public function index(){
-        return $this->model::paginate();
+    public function index($paginate)
+    {
+        return $paginate ? $this->model::paginate() : $this->model::all();
     }
 
     public function show($id)
@@ -56,7 +57,8 @@ class Service
         }
     }
 
-    private function addRelationships(Request $request) {
+    private function addRelationships(Request $request)
+    {
         foreach($this->relationships as $rel) {
             $request = $this->moveIdFromObject($request, $rel);
         }
@@ -64,7 +66,8 @@ class Service
         return $request;
     }
 
-    private function moveIdFromObject(Request $request, $table) {
+    private function moveIdFromObject(Request $request, $table)
+    {
         $child = $request->input($table);
         if($child != null && in_array('id', array_keys($child))){
             $request->merge([
@@ -74,4 +77,5 @@ class Service
 
         return $request;
     }
+
 }
