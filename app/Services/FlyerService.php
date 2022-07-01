@@ -19,11 +19,17 @@ class FlyerService extends Service
     public function store(Request $request)
     {
         $flyer = parent::store($request);
-
         $products = $this->getProductsList($request->all()['products']);
-        $flyer->products()->saveMany($products);
 
-        return $flyer;
+        $productsToAttach = [];
+        foreach ($products as $product) {
+            $validity = $this->getValidityFromResponse($request, $product->id);
+            $productsToAttach[$product->id] = ['validity' => $validity];
+        }
+
+        $flyer->products()->attach($productsToAttach);
+
+        return $this->model->findOrFail($flyer->id);
     }
 
     public function update(Request $request, $id)
@@ -32,9 +38,16 @@ class FlyerService extends Service
 
         $this->deleteAllFlyerProducts($flyer["id"]);
         $products = $this->getProductsList($request->all()['products']);
-        $flyer->products()->saveMany($products);
 
-        return $flyer::findOrFail($id);
+        $productsToAttach = [];
+        foreach ($products as $product) {
+            $validity = $this->getValidityFromResponse($request, $product->id);
+            $productsToAttach[$product->id] = ['validity' => $validity];
+        }
+
+        $flyer->products()->attach($productsToAttach);
+
+        return $this->model->findOrFail($id);
     }
 
     private function getProductsList($products) {
@@ -48,6 +61,17 @@ class FlyerService extends Service
         }
 
         return $productList;
+    }
+
+    private function getValidityFromResponse(Request $request, $productId) {
+        $products = $request->all()['products'];
+        foreach($products as $product) {
+            if ($product['id'] == $productId) {
+                return $product['validity'];
+            }
+        }
+
+        return '';
     }
 
     private function deleteAllFlyerProducts($flyerId)

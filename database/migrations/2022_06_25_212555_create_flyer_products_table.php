@@ -16,6 +16,8 @@ class CreateFlyerProductsTable extends Migration
         Schema::create('flyer_product', function (Blueprint $table) {
             $table->id();
 
+            $table->date('validity')->nullable();
+
             $table->foreignId('flyer_id')
                 ->constrained();
 
