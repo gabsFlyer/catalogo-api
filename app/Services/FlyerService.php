@@ -67,11 +67,15 @@ class FlyerService extends Service
         $products = $request->all()['products'];
         foreach($products as $product) {
             if ($product['id'] == $productId) {
-                return $product['validity'];
+                var_dump($product);
+                if (array_key_exists('validity', $product)) {
+                    print('ACHOU');
+                    return $product['validity'];
+                }
             }
         }
 
-        return '';
+        return null;
     }
 
     private function deleteAllFlyerProducts($flyerId)
