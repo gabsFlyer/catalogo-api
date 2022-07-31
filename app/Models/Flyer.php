@@ -23,7 +23,7 @@ class Flyer extends Model
     }
 
     public function products() {
-        return $this->belongsToMany(Product::class)->withPivot("validity");
+        return $this->hasMany(FlyerProduct::class);
     }
 
     public function rules(){
