@@ -51,9 +51,12 @@ class FlyerService extends Service
     {
         foreach ($flyerProducts as $flyerProduct) {
             $model = new FlyerProduct();
-            $model['validity'] = $flyerProduct['validity'];
             $model['product_id'] = $flyerProduct['product']['id'];
             $model['flyer_id'] = $flyerId;
+
+            if (array_key_exists('validity', $flyerProduct)) {
+                $model['validity'] = $flyerProduct['validity'];
+            }
 
             $model->save();
         }
