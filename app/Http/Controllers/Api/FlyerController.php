@@ -1,7 +1,6 @@
 <?php
 namespace App\Http\Controllers\Api;
 
-use App\Dtos\FlyerDto;
 use App\Http\Controllers\Controller;
 use App\Models\Flyer;
 use App\Services\FlyerService;
