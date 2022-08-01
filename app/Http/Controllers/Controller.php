@@ -18,9 +18,10 @@ class Controller extends BaseController
 {
     use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function index()
+    public function index(Request $request)
     {
-        return $this->service->index();
+        $paginate = filter_var($request->query('paginate', true), FILTER_VALIDATE_BOOLEAN);
+        return $this->service->index($paginate);
     }
 
     public function show($id)
