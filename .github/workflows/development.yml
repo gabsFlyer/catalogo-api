@@ -7,6 +7,7 @@ name: 🚀 Development Deploy
 
 env:
   RELEASE_BRANCH: 'api/development'
+  ENV_FILE_NAME: '.env'
   APP_NAME: 'catalogo-bergmann'
   APP_ENV: 'testing'
   APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
@@ -46,6 +47,7 @@ jobs:
           envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
+          file_name: ${{ env.ENV_FILE_NAME }}
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
@@ -111,10 +113,10 @@ jobs:
       - name: 🗑️ Delete vendor.zip
         run: rm vendor.zip
 
-      - name: 🧹 Clear cache
-        run: |
-          php artisan config:clear
-          php artisan config:cache
+      # - name: 🧹 Clear cache
+      #   run: |
+      #     php artisan config:clear
+      #     php artisan config:cache
 
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
@@ -157,6 +159,7 @@ jobs:
           envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
+          file_name: ${{ env.ENV_FILE_NAME }}
 
       - name: 📄 Make Backup
         run: php artisan backup:run --only-db

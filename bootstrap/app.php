@@ -41,6 +41,14 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+// echo 'basepath: ' . base_path();
+
+// $envFile = str_contains(__FILE__, 'dev') ? '.env-dev' : '.env';
+// $envFile = base_path() . '/.env';
+
+// echo 'envFile: '. $envFile;
+// $app->loadEnvironmentFrom($envFile);
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
