@@ -142,7 +142,7 @@ jobs:
       - name: 👮🏻 Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_APP_NAME: "Catálogo Bergmann"
+          envkey_APP_NAME: "catalogo-bergmann"
           envkey_APP_ENV: "testing"
           envkey_APP_URL: "https://dev.distribuidorabergmann.com.br/api"
           envkey_DB_CONNECTION: "mysql"
