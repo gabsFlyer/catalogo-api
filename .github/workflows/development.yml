@@ -7,7 +7,6 @@ name: 🚀 Development Deploy
 
 env:
   RELEASE_BRANCH: 'api/development'
-  ENV_FILE: '.env.dev'
 
 jobs:
   build:
@@ -28,10 +27,20 @@ jobs:
         with:
           dependency-versions: highest
 
-      - name: 👮🏻 Copy env file
-        run: |
-          php -r "file_exists('.env') && unlink('.env');"
-          php -r "copy('${{ env.ENV_FILE }}', '.env');"
+      - name: 👮🏻 Create env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_APP_NAME: 'Catálogo Bergmann'
+          envkey_APP_ENV: 'testing'
+          envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
+          envkey_DB_CONNECTION: 'mysql'
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_DB_PORT: ${{ secrets.DB_PORT }}
+          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_JWT_TTL: 10080
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
@@ -55,8 +64,6 @@ jobs:
             !.git/**
             !.github/**
             !.git*
-            !.env.dev
-            !.env.prod
 
 
   deploy:
@@ -114,7 +121,6 @@ jobs:
 
   backup:
     name: 📄 Backup
-    needs: deploy
     runs-on: ubuntu-latest
 
     steps:
@@ -175,8 +181,20 @@ jobs:
         with:
           dependency-versions: highest
 
-      - name: 👮🏻 Copy env file
-        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+      - name: 👮🏻 Create env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_APP_NAME: 'Catálogo Bergmann'
+          envkey_APP_ENV: 'testing'
+          envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
+          envkey_DB_CONNECTION: 'mysql'
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_DB_PORT: ${{ secrets.DB_PORT }}
+          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_JWT_TTL: 10080
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
