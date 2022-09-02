@@ -30,3 +30,7 @@ Route::get('/optimize', function() {
     $artisanExit = Artisan::call('config:cache');
     return response()->json(['message' => $artisanExit], 200);
 });
+
+Route::get('/oloquinho', function() {
+    return response()->json(['message' => 'oloquinho meu'], 200);
+});
