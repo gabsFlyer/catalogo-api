@@ -7,7 +7,7 @@ name: 🚀 Development Deploy
 
 env:
   RELEASE_BRANCH: 'api/development'
-  ENV_FILE_NAME: '.env-dev'
+  ENV_FILE_NAME: '.env'
   APP_NAME: 'catalogo-bergmann'
   APP_ENV: 'testing'
   APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
