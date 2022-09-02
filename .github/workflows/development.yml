@@ -12,7 +12,6 @@ jobs:
   build:
     name: ⛏️ Build
     runs-on: ubuntu-latest
-    if: ${{ false }}
 
     steps:
       - name: 🏠 Checkout
@@ -31,7 +30,7 @@ jobs:
       - name: 👮🏻 Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_APP_NAME: 'Catálogo Bergmann'
+          envkey_APP_NAME: 'catalogo-bergmann'
           envkey_APP_ENV: 'testing'
           envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
           envkey_DB_CONNECTION: 'mysql'
@@ -71,7 +70,6 @@ jobs:
     name: 🚀 Deploy to ReleasesRepo
     needs: build
     runs-on: ubuntu-latest
-    if: ${{ false }}
 
     steps:
       - name: 🏠 Checkout
@@ -142,10 +140,10 @@ jobs:
       - name: 👮🏻 Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_APP_NAME: "catalogo-bergmann"
-          envkey_APP_ENV: "testing"
-          envkey_APP_URL: "https://dev.distribuidorabergmann.com.br/api"
-          envkey_DB_CONNECTION: "mysql"
+          envkey_APP_NAME: 'catalogo-bergmann'
+          envkey_APP_ENV: 'testing'
+          envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
+          envkey_DB_CONNECTION: 'mysql'
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_DB_PORT: ${{ secrets.DB_PORT }}
           envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
@@ -168,7 +166,6 @@ jobs:
     name: 🗃️ Run migrations
     needs: backup
     runs-on: ubuntu-latest
-    if: ${{ false }}
 
     steps:
       - name: 🏠 Checkout
@@ -187,7 +184,7 @@ jobs:
       - name: 👮🏻 Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_APP_NAME: 'Catálogo Bergmann'
+          envkey_APP_NAME: 'catalogo-bergmann'
           envkey_APP_ENV: 'testing'
           envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
           envkey_DB_CONNECTION: 'mysql'
