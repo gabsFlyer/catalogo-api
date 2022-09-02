@@ -121,6 +121,7 @@ jobs:
 
   backup:
     name: 📄 Backup and Migration
+    needs: deploy
     runs-on: ubuntu-latest
 
     steps:
