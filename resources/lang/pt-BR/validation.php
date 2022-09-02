@@ -137,6 +137,9 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'products' => [
+            'required' => 'É necessário adicionar no mínimo um produto',
+        ]
     ],
 
     /*
@@ -186,6 +189,14 @@ return [
         'description' => 'descrição',
         'password_confirmation' => 'confirmação da senha',
         'current_password' => 'senha atual',
+
+        'unit' => 'unidade',
+        'unit_price' => 'preço unitário',
+        'whatsapp' => 'WhatsApp',
+        'wholesale_price' => 'preço atacado',
+        'wholesale_minimum_quantity' => 'quantidade mínima atacado',
+        'valid_until' => 'válido até',
+        'enterprise.id' => 'empresa',
     ],
 
 ];

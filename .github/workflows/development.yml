@@ -29,7 +29,9 @@ jobs:
           dependency-versions: highest
 
       - name: 👮🏻 Copy env file
-        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+        run: |
+          php -r "file_exists('.env') && unlink('.env');"
+          php -r "copy('${{ env.ENV_FILE }}', '.env');"
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
@@ -53,6 +55,8 @@ jobs:
             !.git/**
             !.github/**
             !.git*
+            !.env.dev
+            !.env.prod
 
 
   deploy:
@@ -94,6 +98,11 @@ jobs:
 
       - name: 🗑️ Delete vendor.zip
         run: rm vendor.zip
+
+      - name: 🧹 Clear cache
+        run: |
+          php artisan config:clear
+          php artisan config:cache
 
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0

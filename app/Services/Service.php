@@ -6,8 +6,11 @@ use PDOException;
 
 class Service
 {
-    public function index(){
-        return $this->model::paginate();
+    protected $relationships = [];
+
+    public function index($paginate)
+    {
+        return $paginate ? $this->model::paginate() : $this->model::all();
     }
 
     public function show($id)
@@ -17,11 +20,15 @@ class Service
 
     public function store(Request $request)
     {
+        $request = $this->addRelationships($request);
+
         return $this->model::create($request->all());
     }
 
     public function update(Request $request, $id)
     {
+        $request = $this->addRelationships($request);
+
         $model = $this->model::findOrFail($id);
         $model->update($request->all());
 
@@ -49,4 +56,26 @@ class Service
                 break;
         }
     }
+
+    private function addRelationships(Request $request)
+    {
+        foreach($this->relationships as $rel) {
+            $request = $this->moveIdFromObject($request, $rel);
+        }
+
+        return $request;
+    }
+
+    private function moveIdFromObject(Request $request, $table)
+    {
+        $child = $request->input($table);
+        if($child != null && in_array('id', array_keys($child))){
+            $request->merge([
+                "{$table}_id" => $child['id']
+            ]);
+        }
+
+        return $request;
+    }
+
 }
