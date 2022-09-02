@@ -41,7 +41,7 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-echo '__FILE__: ' . __FILE__;
+echo 'basepath: ' . base_path();
 
 $envFile = str_contains(__FILE__, 'dev') ? '.env-dev' : '.env';
 
