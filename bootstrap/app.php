@@ -44,6 +44,8 @@ $app->singleton(
 echo '__FILE__: ' . __FILE__;
 
 $envFile = str_contains(__FILE__, 'dev') ? '.env-dev' : '.env';
+
+echo 'envFile: '. $envFile;
 $app->loadEnvironmentFrom($envFile);
 
 /*
