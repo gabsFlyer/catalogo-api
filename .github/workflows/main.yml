@@ -7,7 +7,11 @@ name: 🚀 Production Deploy
 
 env:
   RELEASE_BRANCH: 'api/production'
-  ENV_FILE: '.env.prod'
+  APP_NAME: 'catalogo-bergmann'
+  APP_ENV: 'production'
+  APP_URL: 'https://distribuidorabergmann.com.br/api'
+  DB_CONNECTION: 'mysql'
+  JWT_TTL: 10080
 
 jobs:
   build:
@@ -28,8 +32,20 @@ jobs:
         with:
           dependency-versions: highest
 
-      - name: 👮🏻 Copy env file
-        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+      - name: 👮🏻 Create env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_APP_NAME: ${{ env.APP_NAME }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_DB_PORT: ${{ secrets.DB_PORT }}
+          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_PRD }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_PRD }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRD }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
@@ -122,8 +138,20 @@ jobs:
         with:
           dependency-versions: highest
 
-      - name: 👮🏻 Copy env file
-        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
+      - name: 👮🏻 Create env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_APP_NAME: ${{ env.APP_NAME }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
+          envkey_DB_HOST: ${{ secrets.DB_HOST }}
+          envkey_DB_PORT: ${{ secrets.DB_PORT }}
+          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_PRD }}
+          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_PRD }}
+          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRD }}
+          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 📄 Make Backup
         run: php artisan backup:run --only-db
@@ -133,29 +161,6 @@ jobs:
         with:
           name: backup
           path: './storage/app/catalogo-api'
-
-
-  migrate:
-    name: 🗃️ Run migrations
-    needs: backup
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🏠 Checkout
-        uses: actions/checkout@v2
-
-      - name: ⚙️ Setup PHP
-        uses: "shivammathur/setup-php@v2"
-        with:
-          php-version: '7.4'
-
-      - name: ⚙️ Setup Composer
-        uses: "ramsey/composer-install@v2"
-        with:
-          dependency-versions: highest
-
-      - name: 👮🏻 Copy env file
-        run: php -r "file_exists('.env') || copy('${{ env.ENV_FILE }}', '.env');"
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
