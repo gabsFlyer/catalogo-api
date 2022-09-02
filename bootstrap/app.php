@@ -41,6 +41,8 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
+$app->loadEnvironmentFrom('./.env');
+
 /*
 |--------------------------------------------------------------------------
 | Return The Application
