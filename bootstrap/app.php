@@ -41,7 +41,9 @@ $app->singleton(
     App\Exceptions\Handler::class
 );
 
-$envFile = str_contains($_SERVER['HTTP_HOST'], 'dev') ? '.env-dev' : '.env';
+echo '__FILE__: ' . __FILE__;
+
+$envFile = str_contains(__FILE__, 'dev') ? '.env-dev' : '.env';
 $app->loadEnvironmentFrom('./.env');
 
 /*
