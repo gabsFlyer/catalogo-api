@@ -7,6 +7,11 @@ name: 🚀 Development Deploy
 
 env:
   RELEASE_BRANCH: 'api/development'
+  APP_NAME: 'catalogo-bergmann'
+  APP_ENV: 'testing'
+  APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
+  DB_CONNECTION: 'mysql'
+  JWT_TTL: 10080
 
 jobs:
   build:
@@ -30,17 +35,17 @@ jobs:
       - name: 👮🏻 Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_APP_NAME: 'catalogo-bergmann'
-          envkey_APP_ENV: 'testing'
-          envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
-          envkey_DB_CONNECTION: 'mysql'
+          envkey_APP_NAME: ${{ env.APP_NAME }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_DB_PORT: ${{ secrets.DB_PORT }}
           envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
           envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
           envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          envkey_JWT_TTL: 10080
+          envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
@@ -141,17 +146,17 @@ jobs:
       - name: 👮🏻 Create env file
         uses: SpicyPizza/create-envfile@v1.3
         with:
-          envkey_APP_NAME: 'catalogo-bergmann'
-          envkey_APP_ENV: 'testing'
-          envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
-          envkey_DB_CONNECTION: 'mysql'
+          envkey_APP_NAME: ${{ env.APP_NAME }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
           envkey_DB_HOST: ${{ secrets.DB_HOST }}
           envkey_DB_PORT: ${{ secrets.DB_PORT }}
           envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
           envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
           envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
           envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          envkey_JWT_TTL: 10080
+          envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 📄 Make Backup
         run: php artisan backup:run --only-db
