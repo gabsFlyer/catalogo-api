@@ -120,7 +120,7 @@ jobs:
 
 
   backup:
-    name: 📄 Backup
+    name: 📄 Backup and Migration
     runs-on: ubuntu-latest
 
     steps:
@@ -160,41 +160,6 @@ jobs:
         with:
           name: backup
           path: './storage/app/catalogo-api'
-
-
-  migrate:
-    name: 🗃️ Run migrations
-    needs: backup
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🏠 Checkout
-        uses: actions/checkout@v2
-
-      - name: ⚙️ Setup PHP
-        uses: "shivammathur/setup-php@v2"
-        with:
-          php-version: '7.4'
-
-      - name: ⚙️ Setup Composer
-        uses: "ramsey/composer-install@v2"
-        with:
-          dependency-versions: highest
-
-      - name: 👮🏻 Create env file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_APP_NAME: 'catalogo-bergmann'
-          envkey_APP_ENV: 'testing'
-          envkey_APP_URL: 'https://dev.distribuidorabergmann.com.br/api'
-          envkey_DB_CONNECTION: 'mysql'
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
-          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
-          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
-          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
-          envkey_JWT_TTL: 10080
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
