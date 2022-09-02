@@ -113,10 +113,10 @@ jobs:
       - name: 🗑️ Delete vendor.zip
         run: rm vendor.zip
 
-      - name: 🧹 Clear cache
-        run: |
-          php artisan config:clear
-          php artisan config:cache
+      # - name: 🧹 Clear cache
+      #   run: |
+      #     php artisan config:clear
+      #     php artisan config:cache
 
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
