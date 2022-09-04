@@ -9,7 +9,7 @@ env:
   RELEASE_BRANCH: 'api/production'
   APP_NAME: 'catalogo-bergmann'
   APP_ENV: 'production'
-  APP_URL: 'https://distribuidorabergmann.com.br/api'
+  APP_URL: 'https://api.distribuidorabergmann.com.br'
   DB_CONNECTION: 'mysql'
   JWT_TTL: 10080
 
