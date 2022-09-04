@@ -14,7 +14,9 @@ class TrustHosts extends Middleware
     public function hosts()
     {
         return [
-            $this->allSubdomainsOfApplicationUrl(),
+            //$this->allSubdomainsOfApplicationUrl(),
+            'https://catalogo.distribuidorabergmann.com.br',
+            'https://dev.distribuidorabergmann.com.br',
         ];
     }
 }
