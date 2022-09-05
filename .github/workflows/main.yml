@@ -84,32 +84,33 @@ jobs:
           ssh-key: ${{ secrets.ssh_key }}
           ref: ${{ env.RELEASE_BRANCH }}
 
-      - name: 🧹 Clean old repository files
-        uses: EndBug/add-and-commit@v9.0.0
-        with:
-          remove: './*'
-          new_branch: ${{ env.RELEASE_BRANCH }}
-          push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
-
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
           name: dist
-          path: './'
+          path: './artifact'
 
       - name: ⬇️ Download vendor.zip
         uses: actions/download-artifact@v3.0.0
         with:
           name: vendor
-          path: './'
+          path: './artifact'
+
+      - name: 🔃Overwrite files
+        run: |
+          rm -rf ./vendor
+          cp -r ./artifact/* ./
+          cp ./artifact/.[^.]* ./
 
       - name: 📂 Unzip vendor.zip
         uses: montudor/action-zip@v1
         with:
           args: unzip -qq vendor.zip
 
-      - name: 🗑️ Delete vendor.zip
-        run: rm vendor.zip
+      - name: 🗑️ Delete trash
+        run: |
+          rm vendor.zip
+          rm -rf ./artifact
 
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
@@ -164,3 +165,15 @@ jobs:
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
+
+  optimize:
+    name: 🧹 Optimize Laravel
+    needs: backup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧹 Optimize
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ env.APP_URL }}/optimize'
+          timeout: 10000
