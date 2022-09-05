@@ -109,7 +109,7 @@ jobs:
         run: |
           rm -rf ./vendor
           cp -r ./artifact/* ./
-          cp ./artifact/.htaccess ./.htaccess
+          cp ./artifact/.[^.]* ./
 
       - name: 📂 Unzip vendor.zip
         uses: montudor/action-zip@v1
