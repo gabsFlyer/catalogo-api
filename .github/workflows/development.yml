@@ -15,24 +15,7 @@ env:
   JWT_TTL: 10080
 
 jobs:
-  sshtest:
-    name: 🖥️ Ssh connect
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Connect
-        uses: appleboy/ssh-action@master
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          port: ${{ secrets.SSH_PORT }}
-          script: |
-            cd www
-            ls
-
   build:
-    if: ${{ false }}
     name: ⛏️ Build
     runs-on: ubuntu-latest
 
@@ -130,11 +113,6 @@ jobs:
       - name: 🗑️ Delete vendor.zip
         run: rm vendor.zip
 
-      # - name: 🧹 Clear cache
-      #   run: |
-      #     php artisan config:clear
-      #     php artisan config:cache
-
       - name: 📤 Commit changes
         uses: EndBug/add-and-commit@v9.0.0
         with:
@@ -189,14 +167,3 @@ jobs:
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
-
-  optimize:
-    name: 🧹 Optimize Laravel
-    needs: backup
-    runs-on: ubuntu-latest
-    steps:
-      - name: Call optimization route
-        uses: dkershner6/post-api-call-action@v1
-        with:
-          url: '${{ env.APP_URL }}/optimize'
-
