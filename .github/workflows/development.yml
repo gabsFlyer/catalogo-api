@@ -181,5 +181,5 @@ jobs:
       - name: Call optimization route
         uses: dkershner6/post-api-call-action@v1
         with:
-          url: '{{ env.APP_URL }}/optimize'
+          url: '${{ env.APP_URL }}/optimize'
 
