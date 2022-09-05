@@ -179,8 +179,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Call optimization route
-        uses: fjogeleit/http-request-action@v1
+        uses: dkershner6/post-api-call-action@v1
         with:
           url: '{{ env.APP_URL }}/optimize'
-          timeout: 15000
 
