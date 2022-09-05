@@ -86,24 +86,29 @@ jobs:
           ssh-key: ${{ secrets.ssh_key }}
           ref: ${{ env.RELEASE_BRANCH }}
 
-      - name: 🧹 Clean old repository files
-        uses: EndBug/add-and-commit@v9.0.0
-        with:
-          remove: './* --cached'
-          new_branch: ${{ env.RELEASE_BRANCH }}
-          push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
+      # - name: 🧹 Clean old repository files
+      #   uses: EndBug/add-and-commit@v9.0.0
+      #   with:
+      #     remove: './* --cached'
+      #     new_branch: ${{ env.RELEASE_BRANCH }}
+      #     push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
 
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
           name: dist
-          path: './'
+          path: './artifact'
 
       - name: ⬇️ Download vendor.zip
         uses: actions/download-artifact@v3.0.0
         with:
           name: vendor
-          path: './'
+          path: './artifact'
+
+      - name: 🔃Overwrite files
+        run: |
+          rm -rf ./vendor
+          cp ./artifact/* ./
 
       - name: 📂 Unzip vendor.zip
         uses: montudor/action-zip@v1
