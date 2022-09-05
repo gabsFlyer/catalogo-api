@@ -17,10 +17,7 @@ class Cors
     public function handle(Request $request, Closure $next)
     {
         return $next($request)
-        ->header('Access-Control-Allow-Origin', [
-            'https://catalogo.distribuidorabergmann.com.br',
-            'https://dev.distribuidorabergmann.com.br'
-            ])
+        ->header('Access-Control-Allow-Origin', '*distribuidorabergmann.com.br*')
         ->header('Access-Control-Allow-Headers:  Content-Type, X-Auth-Token, Authorization, Origin')
         ->header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
     }
