@@ -27,7 +27,7 @@ Route::middleware(['apiJwt'])->group(function () {
 });
 
 Route::get('/optimize', function() {
-    Artisan::call('config:cache');
+    Artisan::call('optimize:clear');
     Artisan::call('storage:link');
 
     return response()->json(['message' => 'tudo feito'], 200);

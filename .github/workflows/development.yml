@@ -172,3 +172,14 @@ jobs:
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
+
+  optimize:
+    name: 🧹 Optimize Laravel
+    needs: backup
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call optimization route
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '{{ env.APP_URL }}/optimize'
+
