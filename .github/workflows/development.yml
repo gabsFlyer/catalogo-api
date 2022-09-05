@@ -86,13 +86,6 @@ jobs:
           ssh-key: ${{ secrets.ssh_key }}
           ref: ${{ env.RELEASE_BRANCH }}
 
-      # - name: 🧹 Clean old repository files
-      #   uses: EndBug/add-and-commit@v9.0.0
-      #   with:
-      #     remove: './* --cached'
-      #     new_branch: ${{ env.RELEASE_BRANCH }}
-      #     push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
-
       - name: ⬇️ Download artifact
         uses: actions/download-artifact@v3.0.0
         with:
@@ -175,3 +168,16 @@ jobs:
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
+
+  optimize:
+    name: 🧹 Optimize Laravel
+    needs: backup
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧹 Optimize
+        uses: fjogeleit/http-request-action@v1
+        with:
+          url: '${{ env.APP_URL }}/optimize'
+          timeout: 10000
+
