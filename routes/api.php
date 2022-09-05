@@ -26,7 +26,7 @@ Route::middleware(['apiJwt'])->group(function () {
     Route::apiResource('user', UserController::class);
 });
 
-Route::get('/optimize', function() {
+Route::post('/optimize', function() {
     Artisan::call('optimize:clear');
     Artisan::call('storage:link');
 
