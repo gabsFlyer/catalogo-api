@@ -15,6 +15,16 @@ env:
   JWT_TTL: 10080
 
 jobs:
+  sshtest:
+    name: executing remote ssh commands using ssh key
+    uses: appleboy/ssh-action@master
+    with:
+      host: ${{ secrets.SSH_HOST }}
+      username: ${{ secrets.SSH_USERNAME }}
+      password: ${{ secrets.SSH_PASSWORD }}
+      script: |
+        ls
+
   build:
     if: ${{ false }}
     name: ⛏️ Build
