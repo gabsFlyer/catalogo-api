@@ -180,4 +180,3 @@ jobs:
         with:
           url: '${{ env.APP_URL }}/optimize'
           timeout: 10000
-
