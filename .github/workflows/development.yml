@@ -89,7 +89,7 @@ jobs:
       - name: 🧹 Clean old repository files
         uses: EndBug/add-and-commit@v9.0.0
         with:
-          remove: './*'
+          remove: './* --cached'
           new_branch: ${{ env.RELEASE_BRANCH }}
           push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
 
