@@ -164,7 +164,7 @@ jobs:
         uses: actions/upload-artifact@v3.1.0
         with:
           name: backup
-          path: './storage/app/${{ APP_NAME }}'
+          path: './storage/app/${{ env.APP_NAME }}'
 
       - name: 🔃 Run migrations
         run: php artisan migrate --force
