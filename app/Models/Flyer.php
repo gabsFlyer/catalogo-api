@@ -9,7 +9,8 @@ class Flyer extends Model
 
     protected $fillable = [
         'name',
-        'valid_until',
+        'initial_date',
+        'final_date',
 
         'enterprise_id',
     ];
@@ -28,9 +29,10 @@ class Flyer extends Model
 
     public function rules(){
         return [
-            'name' => 'required',
-            'valid_until' => 'required',
             'enterprise.id' => 'required',
+            'initial_date' => 'required',
+            'final_date' => 'required',
+            'name' => 'required',
             'products' => 'required|array',
         ];
     }
