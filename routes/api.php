@@ -7,6 +7,7 @@ use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\MeasurementUnitController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
+use App\Http\Controllers\Api\CurrentFlyerController;
 use App\Http\Controllers\Api\FlyerController;
 use Illuminate\Support\Facades\Artisan;
 
@@ -25,6 +26,8 @@ Route::middleware(['apiJwt'])->group(function () {
     Route::apiResource('product', ProductController::class);
     Route::apiResource('user', UserController::class);
 });
+
+Route::get('/current-flyer', [CurrentFlyerController::class, 'getCurrentFlyer']);
 
 Route::post('/optimize', function() {
     $result = Artisan::call('optimize:clear');
