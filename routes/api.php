@@ -7,7 +7,7 @@ use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\MeasurementUnitController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\FlyerController;
+use App\Http\Controllers\Api\FlyerController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::post('auth/signIn', [AuthController::class, 'signIn']);
