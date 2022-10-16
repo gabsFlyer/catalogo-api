@@ -8,6 +8,8 @@ use Intervention\Image\ImageManagerStatic as Image;
 
 class FileService extends Service
 {
+    private $acceptable_extensions = ['jpg', 'png', 'webp', 'jpeg'];
+
     public function __construct(File $model)
     {
         $this->model = $model;
@@ -26,6 +28,11 @@ class FileService extends Service
         $extension = explode(';', $extension[1]);
         $extension = $extension[0];
         $fileName = "{$uuid}.{$extension}";
+
+        if (!in_array($extension, $this->acceptable_extensions)) {
+            return response()->json(['message' => 'Arquivo enviado em um formato inválido'], 400);
+        }
+
 
         $file = explode(',', $base64Image);
         $file = $file[1];
