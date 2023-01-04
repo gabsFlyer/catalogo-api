@@ -30,8 +30,8 @@ class Product extends Model
         return [
             'name' => 'required',
             'unit_price' => 'required|gt:0',
-            'wholesale_price' => 'required|gt:0',
-            'wholesale_minimum_quantity' => 'required|gt:0'
+            // 'wholesale_price' => 'sometimes|gt:0',
+            // 'wholesale_minimum_quantity' => 'required_with:wholesale_price|gt:0'
         ];
     }
 

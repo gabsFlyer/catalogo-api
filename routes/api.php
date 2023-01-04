@@ -7,7 +7,8 @@ use App\Http\Controllers\Api\FileController;
 use App\Http\Controllers\Api\MeasurementUnitController;
 use App\Http\Controllers\Api\ProductController;
 use App\Http\Controllers\Api\UserController;
-use App\Http\Controllers\FlyerController;
+use App\Http\Controllers\Api\CurrentFlyerController;
+use App\Http\Controllers\Api\FlyerController;
 use Illuminate\Support\Facades\Artisan;
 
 Route::post('auth/signIn', [AuthController::class, 'signIn']);
@@ -26,7 +27,14 @@ Route::middleware(['apiJwt'])->group(function () {
     Route::apiResource('user', UserController::class);
 });
 
+Route::get('/current-flyer', [CurrentFlyerController::class, 'getCurrentFlyer']);
+
 Route::post('/optimize', function() {
-    Artisan::call('optimize:clear');
-    return response()->json(['message' => 'tudo feito'], 200);
+    $result = Artisan::call('optimize:clear');
+    return response()->json(['message' => $result], 200);
+});
+
+Route::post('/storage-link', function() {
+    $result = Artisan::call('storage:link');
+    return response()->json(['message' => $result], 200);
 });

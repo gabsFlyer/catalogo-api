@@ -9,9 +9,18 @@ env:
   RELEASE_BRANCH: 'api/production'
   APP_NAME: 'catalogo-bergmann'
   APP_ENV: 'production'
+  APP_DEBUG: 'false'
   APP_URL: 'https://api.distribuidorabergmann.com.br'
   DB_CONNECTION: 'mysql'
+
   JWT_TTL: 10080
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_DATABASE: ${{ secrets.DB_DATABASE_PRD }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME_PRD }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRD }}
 
 jobs:
   build:
@@ -36,15 +45,16 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_APP_NAME: ${{ env.APP_NAME }}
-          envkey_APP_ENV: ${{ env.APP_ENV }}
           envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_DEBUG: ${{ env.APP_DEBUG }}
           envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_PRD }}
-          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_PRD }}
-          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRD }}
-          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_DB_HOST: ${{ env.DB_HOST }}
+          envkey_DB_PORT: ${{ env.DB_PORT }}
+          envkey_DB_DATABASE: ${{ env.DB_DATABASE }}
+          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          envkey_JWT_SECRET: ${{ env.JWT_SECRET }}
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 💼 Zip vendor file
@@ -143,15 +153,16 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_APP_NAME: ${{ env.APP_NAME }}
-          envkey_APP_ENV: ${{ env.APP_ENV }}
           envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_DEBUG: ${{ env.APP_DEBUG }}
           envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_PRD }}
-          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_PRD }}
-          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_PRD }}
-          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_DB_HOST: ${{ env.DB_HOST }}
+          envkey_DB_PORT: ${{ env.DB_PORT }}
+          envkey_DB_DATABASE: ${{ env.DB_DATABASE }}
+          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          envkey_JWT_SECRET: ${{ env.JWT_SECRET }}
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 📄 Make Backup

@@ -7,12 +7,20 @@ name: 🚀 Development Deploy
 
 env:
   RELEASE_BRANCH: 'api/development'
-  ENV_FILE_NAME: '.env'
   APP_NAME: 'catalogo-bergmann'
-  APP_ENV: 'testing'
+  APP_ENV: 'local'
+  APP_DEBUG: 'true'
   APP_URL: 'https://apidev.distribuidorabergmann.com.br'
   DB_CONNECTION: 'mysql'
+
   JWT_TTL: 10080
+  JWT_SECRET: ${{ secrets.JWT_SECRET }}
+
+  DB_HOST: ${{ secrets.DB_HOST }}
+  DB_PORT: ${{ secrets.DB_PORT }}
+  DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
+  DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
+  DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
 
 jobs:
   build:
@@ -37,17 +45,17 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_APP_NAME: ${{ env.APP_NAME }}
-          envkey_APP_ENV: ${{ env.APP_ENV }}
           envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_DEBUG: ${{ env.APP_DEBUG }}
           envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
-          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
-          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
-          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_DB_HOST: ${{ env.DB_HOST }}
+          envkey_DB_PORT: ${{ env.DB_PORT }}
+          envkey_DB_DATABASE: ${{ env.DB_DATABASE }}
+          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          envkey_JWT_SECRET: ${{ env.JWT_SECRET }}
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
-          file_name: ${{ env.ENV_FILE_NAME }}
 
       - name: 💼 Zip vendor file
         uses: montudor/action-zip@v1
@@ -145,17 +153,17 @@ jobs:
         uses: SpicyPizza/create-envfile@v1.3
         with:
           envkey_APP_NAME: ${{ env.APP_NAME }}
-          envkey_APP_ENV: ${{ env.APP_ENV }}
           envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_DEBUG: ${{ env.APP_DEBUG }}
           envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
-          envkey_DB_HOST: ${{ secrets.DB_HOST }}
-          envkey_DB_PORT: ${{ secrets.DB_PORT }}
-          envkey_DB_DATABASE: ${{ secrets.DB_DATABASE_DEV }}
-          envkey_DB_USERNAME: ${{ secrets.DB_USERNAME_DEV }}
-          envkey_DB_PASSWORD: ${{ secrets.DB_PASSWORD_DEV }}
-          envkey_JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          envkey_DB_HOST: ${{ env.DB_HOST }}
+          envkey_DB_PORT: ${{ env.DB_PORT }}
+          envkey_DB_DATABASE: ${{ env.DB_DATABASE }}
+          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          envkey_JWT_SECRET: ${{ env.JWT_SECRET }}
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
-          file_name: ${{ env.ENV_FILE_NAME }}
 
       - name: 📄 Make Backup
         run: php artisan backup:run --only-db
