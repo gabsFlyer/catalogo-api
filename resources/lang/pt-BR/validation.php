@@ -197,6 +197,8 @@ return [
         'wholesale_minimum_quantity' => 'quantidade mínima atacado',
         'valid_until' => 'válido até',
         'enterprise.id' => 'empresa',
+        'initial_date' => 'data inicial',
+        'final_date' => 'data final',
     ],
 
 ];
