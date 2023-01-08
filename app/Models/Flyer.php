@@ -31,7 +31,6 @@ class Flyer extends Model
         return [
             'enterprise.id' => 'required',
             'initial_date' => 'required',
-            'final_date' => 'required',
             'name' => 'required',
             'products' => 'required|array',
         ];
