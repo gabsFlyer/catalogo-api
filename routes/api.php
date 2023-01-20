@@ -20,7 +20,10 @@ Route::middleware(['apiJwt'])->group(function () {
     Route::post('auth/refresh', [AuthController::class, 'refresh']);
 
     Route::apiResource('enterprise', EnterpriseController::class);
+
     Route::apiResource('file', FileController::class);
+    Route::post('file/rotate/{id}', [FileController::class, 'rotate']);
+
     Route::apiResource('flyer', FlyerController::class);
     Route::apiResource('measurement-unit', MeasurementUnitController::class);
     Route::apiResource('product', ProductController::class);

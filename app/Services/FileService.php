@@ -63,4 +63,17 @@ class FileService extends Service
 
         return parent::destroy($id);
     }
+
+    public function rotate($id)
+    {
+        $file = $this->model::findOrFail($id);
+        $fileName = $file->file_name;
+        $fileLocation = storage_path("app/public/$fileName");
+
+        Image::make($fileLocation)
+            ->rotate(-90)
+            ->save($fileLocation);
+
+        return $file;
+    }
 }
