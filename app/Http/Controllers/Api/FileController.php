@@ -14,4 +14,9 @@ class FileController extends Controller
         $this->service = $service;
     }
 
+    public function rotate($id)
+    {
+        return $this->service->rotate($id);
+    }
+
 }
