@@ -10,6 +10,7 @@ class FlyerProduct extends Model
 
     protected $fillable = [
         'validity',
+        'offer_price',
 
         'flyer_id',
         'product_id',
