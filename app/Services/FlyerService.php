@@ -58,6 +58,10 @@ class FlyerService extends Service
                 $model['validity'] = $flyerProduct['validity'];
             }
 
+            if (array_key_exists('offer_price', $flyerProduct)) {
+                $model['offer_price'] = $flyerProduct['offer_price'];
+            }
+
             $model->save();
         }
     }
