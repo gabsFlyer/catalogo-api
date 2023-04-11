@@ -173,6 +173,7 @@ jobs:
             -h ${{ env.DB_HOST }} \
             -u ${{ env.DB_USERNAME }} \
             -p ${{ env.DB_PASSWORD }} \
+            --skip-password \
             ${{ env.DB_DATABASE }} \
             > backup.sql \
             | bzip2 -c backup.sql
