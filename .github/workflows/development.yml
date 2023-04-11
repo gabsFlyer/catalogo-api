@@ -166,6 +166,8 @@ jobs:
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 📄 Make Backup
+        env:
+          MYSQL_PWD: ${{ env.DB_PASSWORD }}
         #run: php artisan backup:run --only-db
         #run: php -r "system('mysqldump -h ${{ env.DB_HOST }} -u ${{ env.DB_USERNAME }} -p ${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} > backup.sql');"
         run: mysqldump -h ${{ env.DB_HOST }} -u ${{ env.DB_USERNAME }} -p ${{ env.DB_PASSWORD }} --skip-password ${{ env.DB_DATABASE }} > backup.sql
