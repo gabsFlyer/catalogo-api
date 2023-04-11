@@ -166,16 +166,28 @@ jobs:
           envkey_JWT_TTL: ${{ env.JWT_TTL }}
 
       - name: 📄 Make Backup
-        run: php artisan backup:run --only-db
+        #run: php artisan backup:run --only-db
+        #run: php -r "system('mysqldump -h ${{ env.DB_HOST }} -u ${{ env.DB_USERNAME }} -p ${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} > backup.sql');"
+        run: |
+          mysqldump \
+            -h ${{ env.DB_HOST }} \
+            -u ${{ env.DB_USERNAME }} \
+            -p ${{ env.DB_PASSWORD }} \
+            ${{ env.DB_DATABASE }} \
+            > backup.sql \
+            | bzip2 -c backup.sql
 
-      - name: 📤 Upload backup
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: backup
-          path: './storage/app/${{ env.APP_NAME }}'
+      - name: List files
+        run: ls
 
-      - name: 🔃 Run migrations
-        run: php artisan migrate --force
+      # - name: 📤 Upload backup
+      #   uses: actions/upload-artifact@v3.1.0
+      #   with:
+      #     name: backup
+      #     path: './storage/app/${{ env.APP_NAME }}'
+
+      # - name: 🔃 Run migrations
+      #   run: php artisan migrate
 
   optimize:
     name: 🧹 Optimize Laravel
