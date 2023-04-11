@@ -80,10 +80,47 @@ jobs:
             !.github/**
             !.git*
 
+  migration:
+    name: 📄 Migration
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🏠 Checkout
+        uses: actions/checkout@v3
+
+      - name: ⚙️ Setup PHP
+        uses: "shivammathur/setup-php@v2"
+        with:
+          php-version: '7.4'
+
+      - name: ⚙️ Setup Composer
+        uses: "ramsey/composer-install@v2"
+        with:
+          dependency-versions: highest
+
+      - name: 👮🏻 Create env file
+        uses: SpicyPizza/create-envfile@v1.3
+        with:
+          envkey_APP_NAME: ${{ env.APP_NAME }}
+          envkey_APP_URL: ${{ env.APP_URL }}
+          envkey_APP_ENV: ${{ env.APP_ENV }}
+          envkey_APP_DEBUG: ${{ env.APP_DEBUG }}
+          envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
+          envkey_DB_HOST: ${{ env.DB_HOST }}
+          envkey_DB_PORT: ${{ env.DB_PORT }}
+          envkey_DB_DATABASE: ${{ env.DB_DATABASE }}
+          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
+          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
+          envkey_JWT_SECRET: ${{ env.JWT_SECRET }}
+          envkey_JWT_TTL: ${{ env.JWT_TTL }}
+
+      - name: 🔃 Run migrations
+        run: php artisan migrate
 
   deploy:
     name: 🚀 Deploy to ReleasesRepo
-    needs: build
+    needs: migration
     runs-on: ubuntu-latest
 
     steps:
@@ -128,75 +165,3 @@ jobs:
           message: ${{ github.event.head_commit.message }}
           new_branch: ${{ env.RELEASE_BRANCH }}
           push: 'origin ${{env.RELEASE_BRANCH}} --set-upstream --force'
-
-
-  backup:
-    name: 📄 Backup and Migration
-    needs: deploy
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🏠 Checkout
-        uses: actions/checkout@v2
-
-      - name: ⚙️ Setup PHP
-        uses: "shivammathur/setup-php@v2"
-        with:
-          php-version: '7.4'
-
-      - name: ⚙️ Setup Composer
-        uses: "ramsey/composer-install@v2"
-        with:
-          dependency-versions: highest
-
-      - name: 👮🏻 Create env file
-        uses: SpicyPizza/create-envfile@v1.3
-        with:
-          envkey_APP_NAME: ${{ env.APP_NAME }}
-          envkey_APP_URL: ${{ env.APP_URL }}
-          envkey_APP_ENV: ${{ env.APP_ENV }}
-          envkey_APP_DEBUG: ${{ env.APP_DEBUG }}
-          envkey_DB_CONNECTION: ${{ env.DB_CONNECTION }}
-          envkey_DB_HOST: ${{ env.DB_HOST }}
-          envkey_DB_PORT: ${{ env.DB_PORT }}
-          envkey_DB_DATABASE: ${{ env.DB_DATABASE }}
-          envkey_DB_USERNAME: ${{ env.DB_USERNAME }}
-          envkey_DB_PASSWORD: ${{ env.DB_PASSWORD }}
-          envkey_JWT_SECRET: ${{ env.JWT_SECRET }}
-          envkey_JWT_TTL: ${{ env.JWT_TTL }}
-
-      - name: 📄 Make Backup
-        #run: php artisan backup:run --only-db
-        #run: php -r "system('mysqldump -h ${{ env.DB_HOST }} -u ${{ env.DB_USERNAME }} -p ${{ env.DB_PASSWORD }} ${{ env.DB_DATABASE }} > backup.sql');"
-        run: |
-          mysqldump -h ${{ env.DB_HOST }} \
-            -u ${{ env.DB_USERNAME }} \
-            -p ${{ env.DB_PASSWORD }} \
-            --skip-password \
-            --password1=${{ env.DB_PASSWORD }} \
-            ${{ env.DB_DATABASE }} \
-            > backup.sql
-
-      - name: List files
-        run: ls
-
-      - name: 📤 Upload backup
-        uses: actions/upload-artifact@v3.1.0
-        with:
-          name: backup
-          path: backup.sql
-
-      # - name: 🔃 Run migrations
-      #   run: php artisan migrate
-
-  optimize:
-    name: 🧹 Optimize Laravel
-    needs: backup
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: 🧹 Optimize
-        uses: fjogeleit/http-request-action@v1
-        with:
-          url: '${{ env.APP_URL }}/optimize'
-          timeout: 10000
